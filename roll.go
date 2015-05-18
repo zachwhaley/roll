@@ -74,14 +74,23 @@ func printPentagon(d int) {
 	}
 }
 
-func parseArg(arg string) (int, int) {
+func parseArg(arg string) (int, int, error) {
 	n := strings.Index(arg, "d")
-	cnt, _ := strconv.Atoi(arg[:n])
-	die, _ := strconv.Atoi(arg[n+1:])
-	return cnt, die
+	if n == -1 {
+		return -1, -1, fmt.Errorf("Bad argument: %s\n", arg)
+	}
+	cnt, err := strconv.Atoi(arg[:n])
+	if err != nil {
+		return -1, -1, err
+	}
+	die, err := strconv.Atoi(arg[n+1:])
+	if err != nil {
+		return -1, -1, err
+	}
+	return cnt, die, nil
 }
 
-func processRoll(cnt, die int) int {
+func processRoll(cnt, die int) (int, error) {
 	var print_dice printDice
 
 	switch die {
@@ -100,8 +109,7 @@ func processRoll(cnt, die int) int {
 	case 100:
 		print_dice = printDiamond
 	default:
-		// error, not a valid dice
-		return 0
+		return -1, fmt.Errorf("d%d is not a valid dice\n", die)
 	}
 
 	var result int
@@ -111,17 +119,28 @@ func processRoll(cnt, die int) int {
 		print_dice(result)
 		sum += result
 	}
-	return sum
+	return sum, nil
 }
 
 func main() {
+	if len(os.Args) < 2 {
+		fmt.Fprintf(os.Stderr, "No dice\n")
+		os.Exit(1)
+	}
+
 	var sum int
-	for i, arg := range os.Args {
-		if i == 0 {
-			continue
+	for i := 1; i < len(os.Args); i++ {
+		cnt, die, err := parseArg(os.Args[i])
+		if err != nil {
+			fmt.Fprint(os.Stderr, err)
+			os.Exit(-1)
 		}
-		cnt, die := parseArg(arg)
-		sum += processRoll(cnt, die)
+		res, err := processRoll(cnt, die)
+		if err != nil {
+			fmt.Fprint(os.Stderr, err)
+			os.Exit(-1)
+		}
+		sum += res
 	}
 	fmt.Printf("\n%d\n", sum)
 }
