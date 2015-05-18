@@ -47,11 +47,11 @@ void print_triangle(int d)
 void print_diamond(int d)
 {
     if (d < 10)
-        printf("  .\n,' ',\n\\ %d /\n `-'\n", d);
+        printf("  .\n,' ',\n\\ %d /\n `,'\n", d);
     else if (d < 100)
         printf("  ..\n /  \\\n/ %d \\\n`,  ,'\n  ''\n", d);
     else
-        printf("  .\n,' ',\n\\%d/\n `-'\n", d);
+        printf("  .\n,' ',\n\\%d/\n `,'\n", d);
 }
 
 //   .
@@ -111,7 +111,7 @@ int process_roll(int cnt, int die)
         print_dice = &print_triangle;
         break;
     case 100:
-        print_dice = &print_pentagon;
+        print_dice = &print_diamond;
         break;
     default:
         // error, not a valid dice

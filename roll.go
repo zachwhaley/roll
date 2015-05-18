@@ -50,11 +50,11 @@ func printTriangle(d int) {
 //   ''
 func printDiamond(d int) {
 	if d < 10 {
-		fmt.Printf("  .\n,' ',\n\\ %d /\n `-'\n", d)
+		fmt.Printf("  .\n,' ',\n\\ %d /\n `,'\n", d)
 	} else if d < 100 {
 		fmt.Printf("  ..\n /  \\\n/ %d \\\n`,  ,'\n  ''\n", d)
 	} else {
-		fmt.Printf("  .\n,' ',\n\\%d/\n `-'\n", d)
+		fmt.Printf("  .\n,' ',\n\\%d/\n `,'\n", d)
 	}
 }
 
@@ -98,7 +98,7 @@ func processRoll(cnt, die int) int {
 	case 20:
 		print_dice = printTriangle
 	case 100:
-		print_dice = printPentagon
+		print_dice = printDiamond
 	default:
 		// error, not a valid dice
 		return 0

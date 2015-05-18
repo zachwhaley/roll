@@ -35,11 +35,11 @@ def printtriangle(d):
 #   ''
 def printdiamond(d):
     if d < 10:
-        print "  .\n,' ',\n\\ %d /\n `-'" % d
+        print "  .\n,' ',\n\\ %d /\n `,'" % d
     elif d < 100:
         print "  ..\n /  \\\n/ %d \\\n`,  ,'\n  ''" % d
     else:
-        print "  .\n,' ',\n\\%d/\n `-'" % d
+        print "  .\n,' ',\n\\%d/\n `,'" % d
 
 #   .
 # ,' ',
@@ -75,7 +75,7 @@ def processroll(cnt, die):
     elif die == 20:
         printdice = printtriangle
     elif die == 100:
-        printdice = printpentagon
+        printdice = printdiamond
     else:
         # error, not a valid dice
         return 0
