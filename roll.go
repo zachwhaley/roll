@@ -79,14 +79,14 @@ func parseArg(arg string) (int, int, error) {
 	if n == -1 {
 		return -1, -1, fmt.Errorf("Bad argument: %s\n", arg)
 	}
-	cnt, err := strconv.Atoi(arg[:n])
-	if err != nil {
-		return -1, -1, err
+
+	// Since input like d6 is valid (equal to 1d6) we need to check if the index of "d" in arg
+	// is greater than 0; if so, find the dice count, otherwise set the dice count to 1
+	cnt := 1
+	if n > 0 {
+		cnt, _ = strconv.Atoi(arg[:n])
 	}
-	die, err := strconv.Atoi(arg[n+1:])
-	if err != nil {
-		return -1, -1, err
-	}
+	die, _ := strconv.Atoi(arg[n+1:])
 	return cnt, die, nil
 }
 
