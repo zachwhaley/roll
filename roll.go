@@ -75,7 +75,7 @@ func printPentagon(d int) {
 }
 
 func parseArg(arg string) (int, int) {
-	n := strings.Index(arg, 'd')
+	n := strings.Index(arg, "d")
 	cnt, _ := strconv.Atoi(arg[:n])
 	die, _ := strconv.Atoi(arg[n+1:])
 	return cnt, die
