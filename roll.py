@@ -86,7 +86,7 @@ def processroll(cnt, die):
         result = random.randint(1, die)
         printdice(result)
         sum += result
-    return result
+    return sum
 
 """main"""
 sum = 0
