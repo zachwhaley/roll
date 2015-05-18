@@ -13,7 +13,7 @@ func init() {
 	rand.Seed(time.Now().UTC().UnixNano())
 }
 
-type printDice func(d int)
+type printDice func(int)
 
 // .---.
 // | 6 |
