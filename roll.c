@@ -123,12 +123,11 @@ int process_roll(int cnt, int die)
         return -1;
     }
 
-    int result = 0;
-    int sum = 0;
+    int roll, sum = 0;
     for (int i = 0; i < cnt; i++) {
-        result = 1 + rand() / (RAND_MAX / die + 1);
-        print_dice(result);
-        sum += result;
+        roll = 1 + rand() / (RAND_MAX / die + 1);
+        print_dice(roll);
+        sum += roll;
     }
     return sum;
 }
