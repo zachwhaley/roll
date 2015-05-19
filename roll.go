@@ -69,7 +69,7 @@ func printD100(d int) {
 	fmt.Printf("\n  .\n.´ `.\n\\%03d/\n `-´\n", d)
 }
 
-func parseArg(arg string) (int, int, error) {
+func parseRoll(arg string) (int, int, error) {
 	n := strings.Index(arg, "d")
 	if n == -1 {
 		return -1, -1, fmt.Errorf("Bad argument: %s\n", arg)
@@ -124,7 +124,7 @@ func main() {
 
 	var sum int
 	for i := 1; i < len(os.Args); i++ {
-		cnt, die, err := parseArg(os.Args[i])
+		cnt, die, err := parseRoll(os.Args[i])
 		if err != nil {
 			fmt.Fprint(os.Stderr, err)
 			os.Exit(-1)
