@@ -96,5 +96,5 @@ for i in range(1, len(sys.argv)):
 
 print "\nTotal modifiers: %d" % mods
 sum += mods
-        
+
 print '\n%d' % sum
