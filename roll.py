@@ -99,7 +99,7 @@ for i in range(1, len(sys.argv)):
     elif arg[0] == '-' or arg[0] == '+':
         mods += int(arg);
 
-print "Modifiers: %d" % mods
+print "\nTotal modifiers: %d" % mods
 sum += mods
         
 print '\n%d' % sum
