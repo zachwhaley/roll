@@ -84,18 +84,18 @@ def processroll(cnt, die):
         sum += roll
     return sum
 
-"""main"""
-sum = 0
-mods = 0
-for i in range(1, len(sys.argv)):
-    arg = sys.argv[i];
-    if arg.find('d') != -1:
-        cnt, die = parseroll(arg)
-        sum += processroll(cnt, die)
-    elif arg[0] == '-' or arg[0] == '+':
-        mods += int(arg);
+if __name__ == '__main__':
+    sum = 0
+    mods = 0
+    for i in range(1, len(sys.argv)):
+        arg = sys.argv[i];
+        if arg.find('d') != -1:
+            cnt, die = parseroll(arg)
+            sum += processroll(cnt, die)
+        elif arg[0] == '-' or arg[0] == '+':
+            mods += int(arg);
 
-print('\nTotal modifiers: %d' % mods)
-sum += mods
+    print('\nTotal modifiers: %d' % mods)
+    sum += mods
 
-print('\n%d' % sum)
+    print('\n%d' % sum)
