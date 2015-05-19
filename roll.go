@@ -122,19 +122,27 @@ func main() {
 		os.Exit(1)
 	}
 
-	var sum int
+	var mods, sum int
 	for i := 1; i < len(os.Args); i++ {
-		cnt, die, err := parseRoll(os.Args[i])
-		if err != nil {
-			fmt.Fprint(os.Stderr, err)
-			os.Exit(-1)
+		if os.Args[i][0] == '+' || os.Args[i][0] == '-' {
+			mod, _ := strconv.Atoi(os.Args[i])
+			mods += mod
+		} else {
+			cnt, die, err := parseRoll(os.Args[i])
+			if err != nil {
+				fmt.Fprint(os.Stderr, err)
+				os.Exit(-1)
+			}
+			res, err := processRoll(cnt, die)
+			if err != nil {
+				fmt.Fprint(os.Stderr, err)
+				os.Exit(-1)
+			}
+			sum += res
 		}
-		res, err := processRoll(cnt, die)
-		if err != nil {
-			fmt.Fprint(os.Stderr, err)
-			os.Exit(-1)
-		}
-		sum += res
 	}
+
+	fmt.Printf("\nTotal modifiers: %d\n", mods)
+	sum += mods
 	fmt.Printf("\n%d\n", sum)
 }
