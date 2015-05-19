@@ -13,10 +13,10 @@ typedef void (*print_dice_t)(int);
 //   .
 //  / \
 // / 4 \
-// `---'
+// `---´
 void print_d4(int d)
 {
-    printf("\n  .\n / \\\n/ %d \\\n`---'\n", d);
+    printf("\n  .\n / \\\n/ %d \\\n`---´\n", d);
 }
 
 // .---.
