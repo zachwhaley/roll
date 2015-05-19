@@ -71,9 +71,10 @@ sub printpentagon {
 
 sub parsearg {
     my ($arg) = @_;
-    return split('d', $arg);
-    #my ($cnt, $die) = split('d', $arg);
-    #return ($cnt, $die);
+
+    my ($cnt, $die) = split('d', $arg);
+    $cnt = 1 if ($cnt eq '');
+    return ($cnt, $die);
 }
 
 sub processroll {
