@@ -125,8 +125,7 @@ int process_roll(int cnt, int die)
     int result = 0;
     int sum = 0;
     for (int i = 0; i < cnt; i++) {
-        // http://c-faq.com/lib/randrange.html
-        result = 1 + rand() / (RAND_MAX / (die-2) + 1);
+        result = 1 + rand() / (RAND_MAX / die + 1);
         print_dice(result);
         sum += result;
     }
