@@ -63,7 +63,7 @@ sub printd100 {
     printf "\n  .\n.´ `.\n\\%03d/\n `-´\n", $d;
 }
 
-sub parsearg {
+sub parseroll {
     my ($arg) = @_;
 
     my ($cnt, $die) = split('d', $arg);
@@ -117,7 +117,7 @@ my $sum = 0;
 my $mods = 0;
 foreach my $arg (@ARGV) {
     if ($arg =~ /d/) {
-        my ($cnt, $die) = parsearg($arg);
+        my ($cnt, $die) = parseroll($arg);
         $sum += processroll($cnt, $die);
     }
     elsif ($arg =~ /^(-|\+)/) {

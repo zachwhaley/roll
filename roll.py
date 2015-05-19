@@ -51,7 +51,7 @@ def printd20(d):
 def printd100(d):
     print "\n  .\n.´ `.\n\\%03d/\n `-´\n" % d
 
-def parsearg(arg):
+def parseroll(arg):
     n = arg.find('d')
     cnt = int(arg[:n])
     die = int(arg[n+1:])
@@ -89,7 +89,7 @@ mods = 0
 for i in range(1, len(sys.argv)):
     arg = sys.argv[i];
     if arg.find('d') != -1:
-        cnt, die = parsearg(arg)
+        cnt, die = parseroll(arg)
         sum += processroll(cnt, die)
     elif arg[0] == '-' or arg[0] == '+':
         mods += int(arg);
