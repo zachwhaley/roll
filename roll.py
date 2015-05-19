@@ -89,11 +89,11 @@ if __name__ == '__main__':
     mods = 0
     for i in range(1, len(sys.argv)):
         arg = sys.argv[i];
-        if arg.find('d') != -1:
+        if arg[0] == '-' or arg[0] == '+':
+            mods += int(arg);
+        else:
             cnt, die = parseroll(arg)
             sum += processroll(cnt, die)
-        elif arg[0] == '-' or arg[0] == '+':
-            mods += int(arg);
 
     print('\nTotal modifiers: %d' % mods)
     sum += mods
