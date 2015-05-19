@@ -76,12 +76,11 @@ def processroll(cnt, die):
         # error, not a valid dice
         return 0
 
-    result = 0
     sum = 0
     for i in range(cnt):
-        result = random.randint(1, die)
-        printdice(result)
-        sum += result
+        roll = random.randint(1, die)
+        printdice(roll)
+        sum += roll
     return sum
 
 """main"""
