@@ -140,8 +140,7 @@ int main(int argc, const char *argv[])
     }
     srand(time(NULL));
 
-    int res = 0;
-    int sum = 0;
+    int res, sum = 0;
     for (int i = 1; i < argc; i++) {
         struct roll_t roll;
         if (parse_arg(argv[i], &roll) == -1)
