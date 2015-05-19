@@ -107,12 +107,11 @@ func processRoll(cnt, die int) (int, error) {
 		return -1, fmt.Errorf("d%d is not a valid dice\n", die)
 	}
 
-	var result int
 	var sum int
 	for i := 0; i < cnt; i++ {
-		result = rand.Intn(die) + 1
-		print_dice(result)
-		sum += result
+		roll := rand.Intn(die) + 1
+		print_dice(roll)
+		sum += roll
 	}
 	return sum, nil
 }
