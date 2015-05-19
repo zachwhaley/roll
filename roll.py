@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import random
 import sys
 
@@ -9,47 +10,47 @@ import sys
 # / 4 \
 # `---´
 def printd4(d):
-    print "\n  .\n / \\\n/ %d \\\n`---´\n" % d
+    print("\n  .\n / \\\n/ %d \\\n`---´\n" % d)
 
 # .---.
 # | 6 |
 # '---'
 def printd6(d):
-    print "\n.---.\n| %d |\n'---'\n" % d
+    print("\n.---.\n| %d |\n'---'\n" % d)
 
 #  /'\
 # /___\
 # \ 8 /
 #  \./
 def printd8(d):
-    print "\n /'\\\n/___\\\n\\ %d /\n \\./\n" % d
+    print("\n /'\\\n/___\\\n\\ %d /\n \\./\n" % d)
 
 #  ./\.
 # //10\\
 # ``--´´
 def printd10(d):
-    print "\n ./\\. \n//%02d\\\\\n``--´´\n" % d
+    print("\n ./\\. \n//%02d\\\\\n``--´´\n" % d)
 
 #  .__.
 # /\__/\
 # \/12\/
 #  `--´
 def printd12(d):
-    print "\n .__. \n/\\__/\\\n\\/%02d\\/\n `--´ \n" % d
+    print("\n .__. \n/\\__/\\\n\\/%02d\\/\n `--´ \n" % d)
 
 #   __
 #  /__\
 # /\20/\
 # \_\/_/
 def printd20(d):
-    print "\n  __  \n /__\\ \n/\\%02d/\\\n\\_\\/_/\n" % d
+    print("\n  __  \n /__\\ \n/\\%02d/\\\n\\_\\/_/\n" % d)
 
 #   .
 # .´ `.
 # \100/
 #  `-´
 def printd100(d):
-    print "\n  .\n.´ `.\n\\%03d/\n `-´\n" % d
+    print("\n  .\n.´ `.\n\\%03d/\n `-´\n" % d)
 
 def parseroll(arg):
     n = arg.find('d')
@@ -94,7 +95,7 @@ for i in range(1, len(sys.argv)):
     elif arg[0] == '-' or arg[0] == '+':
         mods += int(arg);
 
-print "\nTotal modifiers: %d" % mods
+print('\nTotal modifiers: %d' % mods)
 sum += mods
 
-print '\n%d' % sum
+print('\n%d' % sum)
