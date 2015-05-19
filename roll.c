@@ -10,64 +10,65 @@ struct roll_t {
 
 typedef void (*print_dice_t)(int);
 
-// .---.
-// | 6 |
-// '---'
-void print_square(int d)
-{
-    printf(".---.\n| %d |\n'---'\n", d);
-}
-
 //   .
 //  / \
 // / 4 \
 // `---'
-//   ..
-//  /  \
-// / 20 \
-// `----'
-void print_triangle(int d)
+void print_d4(int d)
 {
-    if (d < 10)
-        printf("  .\n / \\\n/ %d \\\n`---'\n", d);
-    else
-        printf("  ..\n /  \\\n/ %d \\\n`----'\n", d);
+    printf("\n  .\n / \\\n/ %d \\\n`---'\n", d);
+}
+
+// .---.
+// | 6 |
+// '---'
+void print_d6(int d)
+{
+    printf("\n.---.\n| %d |\n'---'\n", d);
+}
+
+//  /'\
+// /___\
+// \ 8 /
+//  \./
+void print_d8(int d)
+{
+    printf("\n /'\\\n/___\\\n\\ %d /\n \\./\n", d);
+}
+
+//  ./\.
+// //10\\
+// ``--´´
+void print_d10(int d)
+{
+    printf("\n ./\\. \n//%02d\\\\\n``--´´\n", d);
+}
+
+//  .__.
+// /\__/\
+// \/12\/
+//  `--´
+void print_d12(int d)
+{
+    printf("\n .__. \n/\\__/\\\n\\/%02d\\/\n `--´ \n", d);
+}
+
+//   __
+//  /__\
+// /\20/\
+// \_\/_/
+void print_d20(int d)
+{
+    printf("\n  __  \n /__\\ \n/\\%02d/\\\n\\_\\/_/\n", d);
 }
 
 //   .
-//  / \
-// / 1 \
-// `, ,'
-//   '
-//   ..
-//  /  \
-// / 10 \
-// `,  ,'
-//   ''
-void print_diamond(int d)
+// .´ `.
+// \100/
+//  `-´
+void print_d100(int d)
 {
-    if (d < 10)
-        printf("  .\n,' ',\n\\ %d /\n `,'\n", d);
-    else if (d < 100)
-        printf("  ..\n /  \\\n/ %d \\\n`,  ,'\n  ''\n", d);
-    else
-        printf("  .\n,' ',\n\\%d/\n `,'\n", d);
-}
-
-//   .
-// ,' ',
-// \ 1 /
-//  `-'
-//   ..
-// ,'  ',
-// \ 12 /
-//  `--'
-void print_pentagon(int d)
-{
-    if (d < 10)
-        printf("  .\n,' ',\n\\ %d /\n `-'\n", d);
-    else
-        printf("  ..\n,'  ',\n\\ %d /\n `--'\n", d);
+    printf("\n  .\n.´ `.\n\\%03d/\n `-´\n", d);
 }
 
 int parse_arg(const char *arg, struct roll_t *roll)
@@ -97,25 +98,25 @@ int process_roll(int cnt, int die)
 
     switch (die) {
     case 4:
-        print_dice = &print_triangle;
+        print_dice = &print_d4;
         break;
     case 6:
-        print_dice = &print_square;
+        print_dice = &print_d6;
         break;
     case 8:
-        print_dice = &print_triangle;
+        print_dice = &print_d8;
         break;
     case 10:
-        print_dice = &print_diamond;
+        print_dice = &print_d10;
         break;
     case 12:
-        print_dice = &print_pentagon;
+        print_dice = &print_d12;
         break;
     case 20:
-        print_dice = &print_triangle;
+        print_dice = &print_d20;
         break;
     case 100:
-        print_dice = &print_diamond;
+        print_dice = &print_d100;
         break;
     default:
         fprintf(stderr, "d%d is not a valid dice\n", die);
