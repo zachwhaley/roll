@@ -2,71 +2,65 @@
 
 use strict;
 
-# .---.
-# | 6 |
-# '---'
-sub printsquare {
-my ($d) = @_;
-    print ".---.\n| $d |\n'---'";
-}
-
 #   .
 #  / \
 # / 4 \
-# `---'
-#   ..
-#  /  \
-# / 20 \
-# `----'
-sub printtriangle {
+# `---´
+sub printd4 {
     my ($d) = @_;
-    if ($d < 10) {
-        print "  .\n / \\\n/ $d \\\n`---'";
-    }
-    else {
-        print "  ..\n /  \\\n/ $d \\\n`----'";
-    }
+    print "\n  .\n / \\\n/ $d \\\n`---´\n";
+}
+
+# .---.
+# | 6 |
+# '---'
+sub printd6 {
+    my ($d) = @_;
+    print "\n.---.\n| $d |\n'---'\n";
+}
+
+#  /'\
+# /___\
+# \ 8 /
+#  \./
+sub printd8 {
+    my ($d) = @_;
+    print "\n /'\\\n/___\\\n\\ $d /\n \\./\n";
+}
+
+#  ./\.
+# //10\\
+# ``--´´
+sub printd10 {
+    my ($d) = @_;
+    printf "\n ./\\. \n//%02d\\\\\n``--´´\n", $d;
+}
+
+#  .__.
+# /\__/\
+# \/12\/
+#  `--´
+sub printd12 {
+    my ($d) = @_;
+    printf "\n .__. \n/\\__/\\\n\\/%02d\\/\n `--´ \n", $d;
+}
+
+#   __
+#  /__\
+# /\20/\
+# \_\/_/
+sub printd20 {
+    my ($d) = @_;
+    printf "\n  __  \n /__\\ \n/\\%02d/\\\n\\_\\/_/\n", $d;
 }
 
 #   .
-#  / \
-# / 1 \
-# `, ,'
-#   '
-#   ..
-#  /  \
-# / 10 \
-# `,  ,'
-#   ''
-sub printdiamond {
+# .´ `.
+# \100/
+#  `-´
+sub printd100 {
     my ($d) = @_;
-    if ($d < 10) {
-        print "  .\n,' ',\n\\ $d /\n `,'";
-    }
-    elsif ($d < 100) {
-        print "  ..\n /  \\\n/ $d \\\n`,  ,'\n  ''";
-    }
-    else {
-        print "  .\n,' ',\n\\$d/\n `,'";
-    }
-}
-
-#   .
-# ,' ',
-# \ 1 /
-#  `-'
-#   ..
-# ,'  ',
-# \ 12 /
-#  `--'
-sub printpentagon {
-    my ($d) = @_;
-    if ($d < 10) {
-        print "  .\n,' ',\n\\ $d /\n `-'";
-    }
-    else {
-        print "  ..\n,'  ',\n\\ $d /\n `--'";
-    }
+    printf "\n  .\n.´ `.\n\\%03d/\n `-´\n", $d;
 }
 
 sub parsearg {
@@ -81,25 +75,25 @@ sub processroll {
 
     my $printdice;
     if ($die == 4) {
-        $printdice = \&printtriangle;
+        $printdice = \&printd4;
     }
     elsif ($die == 6) {
-        $printdice = \&printsquare;
+        $printdice = \&printd6;
     }
     elsif ($die == 8) {
-        $printdice = \&printtriangle;
+        $printdice = \&printd8;
     }
     elsif ($die == 10) {
-        $printdice = \&printdiamond;
+        $printdice = \&printd10;
     }
     elsif ($die == 12) {
-        $printdice = \&printpentagon;
+        $printdice = \&printd12;
     }
     elsif ($die == 20) {
-        $printdice = \&printtriangle;
+        $printdice = \&printd20;
     }
     elsif ($die == 100) {
-        $printdice = \&printdiamond;
+        $printdice = \&printd100;
     }
     else {
         # error, not a valid dice
