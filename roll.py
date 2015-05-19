@@ -90,7 +90,16 @@ def processroll(cnt, die):
 
 """main"""
 sum = 0
+mods = 0
 for i in range(1, len(sys.argv)):
-    cnt, die = parsearg(sys.argv[i])
-    sum += processroll(cnt, die)
+    arg = sys.argv[i];
+    if arg.find('d') != -1:
+        cnt, die = parsearg(arg)
+        sum += processroll(cnt, die)
+    elif arg[0] == '-' or arg[0] == '+':
+        mods += int(arg);
+
+print "Modifiers: %d" % mods
+sum += mods
+        
 print '\n%d' % sum
