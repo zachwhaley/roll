@@ -7,7 +7,7 @@ use strict;
 # '---'
 sub printsquare {
 my ($d) = @_;
-    print ".---.\n| $d |\n'---'";
+    print "\n.---.\n| $d |\n'---'";
 }
 
 #   .
@@ -21,10 +21,10 @@ my ($d) = @_;
 sub printtriangle {
     my ($d) = @_;
     if ($d < 10) {
-        print "  .\n / \\\n/ $d \\\n`---'";
+        print "\n  .\n / \\\n/ $d \\\n`---'";
     }
     else {
-        print "  ..\n /  \\\n/ $d \\\n`----'";
+        print "\n  ..\n /  \\\n/ $d \\\n`----'";
     }
 }
 
@@ -41,13 +41,13 @@ sub printtriangle {
 sub printdiamond {
     my ($d) = @_;
     if ($d < 10) {
-        print "  .\n,' ',\n\\ $d /\n `,'";
+        print "\n  .\n,' ',\n\\ $d /\n `,'";
     }
     elsif ($d < 100) {
-        print "  ..\n /  \\\n/ $d \\\n`,  ,'\n  ''";
+        print "\n  ..\n /  \\\n/ $d \\\n`,  ,'\n  ''";
     }
     else {
-        print "  .\n,' ',\n\\$d/\n `,'";
+        print "\n  .\n,' ',\n\\$d/\n `,'";
     }
 }
 
@@ -62,10 +62,10 @@ sub printdiamond {
 sub printpentagon {
     my ($d) = @_;
     if ($d < 10) {
-        print "  .\n,' ',\n\\ $d /\n `-'";
+        print "\n  .\n,' ',\n\\ $d /\n `-'";
     }
     else {
-        print "  ..\n,'  ',\n\\ $d /\n `--'";
+        print "\n  ..\n,'  ',\n\\ $d /\n `--'";
     }
 }
 
