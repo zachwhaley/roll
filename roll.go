@@ -15,63 +15,58 @@ func init() {
 
 type printDice func(int)
 
-// .---.
-// | 6 |
-// '---'
-func printSquare(d int) {
-	fmt.Printf(".---.\n| %d |\n'---'\n", d)
-}
-
 //   .
 //  / \
 // / 4 \
-// `---'
-//   ..
-//  /  \
-// / 20 \
-// `----'
-func printTriangle(d int) {
-	if d < 10 {
-		fmt.Printf("  .\n / \\\n/ %d \\\n`---'\n", d)
-	} else {
-		fmt.Printf("  ..\n /  \\\n/ %d \\\n`----'\n", d)
-	}
+// `---´
+func printD4(d int) {
+	fmt.Printf("\n  .\n / \\\n/ %d \\\n`---´\n", d)
+}
+
+// .---.
+// | 6 |
+// '---'
+func printD6(d int) {
+	fmt.Printf("\n.---.\n| %d |\n'---'\n", d)
+}
+
+//  /'\
+// /___\
+// \ 8 /
+//  \./
+func printD8(d int) {
+	fmt.Printf("\n /'\\\n/___\\\n\\ %d /\n \\./\n", d)
+}
+
+//  ./\.
+// //10\\
+// ``--´´
+func printD10(d int) {
+	fmt.Printf("\n ./\\. \n//%02d\\\\\n``--´´\n", d)
+}
+
+//  .__.
+// /\__/\
+// \/12\/
+//  `--´
+func printD12(d int) {
+	fmt.Printf("\n .__. \n/\\__/\\\n\\/%02d\\/\n `--´ \n", d)
+}
+
+//   __
+//  /__\
+// /\20/\
+// \_\/_/
+func printD20(d int) {
+	fmt.Printf("\n  __  \n /__\\ \n/\\%02d/\\\n\\_\\/_/\n", d)
 }
 
 //   .
-//  / \
-// / 1 \
-// `, ,'
-//   '
-//   ..
-//  /  \
-// / 10 \
-// `,  ,'
-//   ''
-func printDiamond(d int) {
-	if d < 10 {
-		fmt.Printf("  .\n,' ',\n\\ %d /\n `,'\n", d)
-	} else if d < 100 {
-		fmt.Printf("  ..\n /  \\\n/ %d \\\n`,  ,'\n  ''\n", d)
-	} else {
-		fmt.Printf("  .\n,' ',\n\\%d/\n `,'\n", d)
-	}
-}
-
-//   .
-// ,' ',
-// \ 1 /
-//  `-'
-//   ..
-// ,'  ',
-// \ 12 /
-//  `--'
-func printPentagon(d int) {
-	if d < 10 {
-		fmt.Printf("  .\n,' ',\n\\ %d /\n `-'\n", d)
-	} else {
-		fmt.Printf("  ..\n,'  ',\n\\ %d /\n `--'\n", d)
-	}
+// .´ `.
+// \100/
+//  `-´
+func printD100(d int) {
+	fmt.Printf("\n  .\n.´ `.\n\\%03d/\n `-´\n", d)
 }
 
 func parseArg(arg string) (int, int, error) {
@@ -95,19 +90,19 @@ func processRoll(cnt, die int) (int, error) {
 
 	switch die {
 	case 4:
-		print_dice = printTriangle
+		print_dice = printD4
 	case 6:
-		print_dice = printSquare
+		print_dice = printD6
 	case 8:
-		print_dice = printTriangle
+		print_dice = printD8
 	case 10:
-		print_dice = printDiamond
+		print_dice = printD10
 	case 12:
-		print_dice = printPentagon
+		print_dice = printD12
 	case 20:
-		print_dice = printTriangle
+		print_dice = printD20
 	case 100:
-		print_dice = printDiamond
+		print_dice = printD100
 	default:
 		return -1, fmt.Errorf("d%d is not a valid dice\n", die)
 	}
