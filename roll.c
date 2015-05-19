@@ -71,7 +71,7 @@ void print_d100(int d)
     printf("\n  .\n.´ `.\n\\%03d/\n `-´\n", d);
 }
 
-int parse_arg(const char *arg, struct roll_t *roll)
+int parse_roll(const char *arg, struct roll_t *roll)
 {
     // Null terminate the middle of the string, so that the arg is technically split into two
     // strings.  The first string, the count of dice, and the second string, the dice to roll.
@@ -140,15 +140,25 @@ int main(int argc, const char *argv[])
     }
     srand(time(NULL));
 
-    int res, sum = 0;
+    int mods, sum = 0;
     for (int i = 1; i < argc; i++) {
-        struct roll_t roll;
-        if (parse_arg(argv[i], &roll) == -1)
-            return -1;
-        if ((res = process_roll(roll.count, roll.dice)) == -1)
-            return -1;
-        sum += res;
+        if (argv[i][0] == '+' || argv[i][0] == '-') {
+            mods += atoi(argv[i]);
+        } else {
+            struct roll_t roll;
+            if (parse_roll(argv[i], &roll) == -1) {
+                return -1;
+            }
+            int res = process_roll(roll.count, roll.dice);
+            if (res == -1) {
+                return -1;
+            }
+            sum += res;
+        }
     }
+
+    printf("\nTotal modifiers: %d\n", mods);
+    sum += mods;
     printf("\n%d\n", sum);
     return 0;
 }
