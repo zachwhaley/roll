@@ -66,8 +66,6 @@ sub printd100 {
 sub parsearg {
     my ($arg) = @_;
     return split('d', $arg);
-    #my ($cnt, $die) = split('d', $arg);
-    #return ($cnt, $die);
 }
 
 sub processroll {
@@ -126,5 +124,5 @@ foreach my $arg (@ARGV) {
 
 print "\nTotal modifiers: $mods\n";
 $sum += $mods;
-        
+
 print "\n$sum\n";
