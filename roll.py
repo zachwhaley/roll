@@ -54,6 +54,8 @@ def printd100(d):
 
 def parseroll(arg):
     n = arg.find('d')
+    if n == -1:
+        raise ValueError('Bad argument: %s' % arg)
     cnt = int(arg[:n])
     die = int(arg[n+1:])
     return cnt, die
@@ -74,8 +76,7 @@ def processroll(cnt, die):
     elif die == 100:
         printdice = printd100
     else:
-        # error, not a valid dice
-        return 0
+        raise ValueError('d%d is not a valid dice' % die)
 
     sum = 0
     for i in range(cnt):
@@ -84,7 +85,10 @@ def processroll(cnt, die):
         sum += roll
     return sum
 
-if __name__ == '__main__':
+def main():
+    if len(sys.argv) < 2:
+        raise ValueError('No dice')
+
     sum = 0
     mods = 0
     for i in range(1, len(sys.argv)):
@@ -99,3 +103,10 @@ if __name__ == '__main__':
     sum += mods
 
     print('\n%d' % sum)
+
+if __name__ == '__main__':
+    try:
+        main()
+    except ValueError as e:
+        print(str(e), file=sys.stderr)
+        sys.exit(-1)
