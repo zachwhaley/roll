@@ -101,12 +101,12 @@ sub processroll {
         return 0;
     }
 
-    my $result = 0;
+    my $roll = 0
     my $sum = 0;
     for (1..$cnt) {
-        $result = int(rand($die))+1;
-        &$printdice($result);
-        $sum += $result;
+        $roll = int(rand($die))+1;
+        &$printdice($roll);
+        $sum += $roll;
     }
 
     return $sum;
