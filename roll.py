@@ -9,48 +9,40 @@ import sys
 #  / \
 # / 4 \
 # `---´
-def printd4(d):
-    print("\n  .\n / \\\n/ %d \\\n`---´\n" % d)
-
-# .---.
-# | 6 |
-# '---'
-def printd6(d):
-    print("\n.---.\n| %d |\n'---'\n" % d)
-
+#
 #  /'\
 # /___\
 # \ 8 /
 #  \./
-def printd8(d):
-    print("\n /'\\\n/___\\\n\\ %d /\n \\./\n" % d)
-
+#
 #  ./\.
 # //10\\
 # ``--´´
-def printd10(d):
-    print("\n ./\\. \n//%02d\\\\\n``--´´\n" % d)
-
+#
 #  .__.
 # /\__/\
 # \/12\/
 #  `--´
-def printd12(d):
-    print("\n .__. \n/\\__/\\\n\\/%02d\\/\n `--´ \n" % d)
-
+#
 #   __
 #  /__\
 # /\20/\
 # \_\/_/
-def printd20(d):
-    print("\n  __  \n /__\\ \n/\\%02d/\\\n\\_\\/_/\n" % d)
-
+#
 #   .
 # .´ `.
 # \100/
 #  `-´
-def printd100(d):
-    print("\n  .\n.´ `.\n\\%03d/\n `-´\n" % d)
+
+dmap = {
+    4:   ["   .  ", "  / \ ", " / %d \\", " `---´"],
+    6:   ["      ", " .---.", " | %d |", " '---'"],
+    8:   ["  /'\ ", " /___\\", " \ %d /", "  \./ "],
+    10:  ["       ", "  ./\. ", " //%02d\\\\", " ``--´´"],
+    12:  ["  .__. ", " /\__/\\", " \/%02d\/", "  `--´ "],
+    20:  ["   __  ", "  /__\ ", " /\\%02d/\\", " \_\/_/"],
+    100: ["   .  ", " .´ `.", " \\%03d/", "  `-´ "],
+    }
 
 def parseroll(arg):
     n = arg.find('d')
@@ -61,29 +53,19 @@ def parseroll(arg):
     return cnt, die
 
 def processroll(cnt, die):
-    if die == 4:
-        printdice = printd4
-    elif die == 6:
-        printdice = printd6
-    elif die == 8:
-        printdice = printd8
-    elif die == 10:
-        printdice = printd10
-    elif die == 12:
-        printdice = printd12
-    elif die == 20:
-        printdice = printd20
-    elif die == 100:
-        printdice = printd100
-    else:
-        raise ValueError('d%d is not a valid dice' % die)
-
-    sum = 0
+    res = []
     for i in range(cnt):
         roll = random.randint(1, die)
-        printdice(roll)
-        sum += roll
-    return sum
+        res.append((roll, die))
+    return res
+
+def printdice(dice):
+    for ln in range(4):
+        for r, d in dice:
+            l = dmap[d]
+            s = l[ln] if ln != 2 else l[ln] % r
+            print(s, end='')
+        print() # print new line
 
 def main():
     if len(sys.argv) < 2:
@@ -91,17 +73,21 @@ def main():
 
     sum = 0
     mods = 0
+    dice = []
     for i in range(1, len(sys.argv)):
         arg = sys.argv[i];
         if arg[0] == '-' or arg[0] == '+':
             mods += int(arg);
         else:
             cnt, die = parseroll(arg)
-            sum += processroll(cnt, die)
+            dice += processroll(cnt, die)
+    printdice(dice)
 
     print('\nTotal modifiers: %d' % mods)
     sum += mods
 
+    for roll, die in dice:
+        sum += roll
     print('\n%d' % sum)
 
 if __name__ == '__main__':
