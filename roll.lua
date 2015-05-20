@@ -58,9 +58,9 @@ end
 
 function parseroll(arg)
   local i, j, cnt, die
-  i, j = string.find(arg, 'd')
-  cnt = (i > 1 and string.sub(arg, 1, i-1) or 1)
-  die = string.sub(arg, j+1, #arg)
+  i, j = arg:find('d')
+  cnt = (i > 1 and arg:sub(1, i-1) or 1)
+  die = arg:sub(j+1, #arg)
   return tonumber(cnt), tonumber(die)
 end
 
