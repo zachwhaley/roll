@@ -124,11 +124,12 @@ func main() {
 
 	var mods, sum int
 	for i := 1; i < len(os.Args); i++ {
-		if os.Args[i][0] == '+' || os.Args[i][0] == '-' {
-			mod, _ := strconv.Atoi(os.Args[i])
+		arg := os.Args[i]
+		if arg[0] == '+' || arg[0] == '-' {
+			mod, _ := strconv.Atoi(arg)
 			mods += mod
 		} else {
-			cnt, die, err := parseRoll(os.Args[i])
+			cnt, die, err := parseRoll(arg)
 			if err != nil {
 				fmt.Fprint(os.Stderr, err)
 				os.Exit(-1)
