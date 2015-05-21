@@ -21,11 +21,11 @@ dmap = {
     }
 
 def parseroll(arg):
-    n = arg.find('d')
-    if n == -1:
+    cnt, sep, die = arg.partition('d')
+    if not sep:
         raise ValueError('Bad argument: %s' % arg)
-    cnt = int(arg[:n])
-    die = int(arg[n+1:])
+    cnt = int(cnt) if cnt else 1
+    die = int(die)
     return cnt, die
 
 def processroll(cnt, die):
