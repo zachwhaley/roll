@@ -5,70 +5,60 @@
 
 struct roll_t {
     int count;
-    int dice;
+    int die;
 };
 
-typedef void (*print_dice_t)(int);
+struct dice_t {
+    int roll;
+    int die;
+    struct dice_t *next;
+};
 
-//   .
-//  / \
-// / 4 \
-// `---´
-void print_d4(int d)
+struct string_t {
+    const char *str;
+};
+
+struct string_t d4[4]   = {{"   .  "}, {"  / \\ "}, {" / %d \\"}, {" `---´"}};
+struct string_t d6[4]   = {{"      "}, {" .---."}, {" | %d |"}, {" '---'"}};
+struct string_t d8[4]   = {{"  /'\\ "}, {" /___\\"}, {" \\ %d /"}, {"  \\./ "}};
+struct string_t d10[4]  = {{"       "}, {"  ./\\. "}, {" //%02d\\\\"}, {" ``--´´"}};
+struct string_t d12[4]  = {{"  .__. "}, {" /\\__/\\"}, {" \\/%02d\\/"}, {"  `--´ "}};
+struct string_t d20[4]  = {{"   __  "}, {"  /__\\ "}, {" /\\%02d/\\"}, {" \\_\\/_/"}};
+struct string_t d100[4] = {{"   .  "}, {" .´ `."}, {" \\%03d/"}, {"  `-´ "}};
+
+void free_dice_t(struct dice_t *dice)
 {
-    printf("\n  .\n / \\\n/ %d \\\n`---´\n", d);
+    if (dice == NULL) return;
+
+    struct dice_t *d;
+    do {
+        d = dice->next;
+        free(dice);
+        dice = d;
+    } while (dice);
 }
 
-// .---.
-// | 6 |
-// '---'
-void print_d6(int d)
+struct string_t* line_map(int die)
 {
-    printf("\n.---.\n| %d |\n'---'\n", d);
-}
-
-//  /'\
-// /___\
-// \ 8 /
-//  \./
-void print_d8(int d)
-{
-    printf("\n /'\\\n/___\\\n\\ %d /\n \\./\n", d);
-}
-
-//  ./\.
-// //10\\
-// ``--´´
-void print_d10(int d)
-{
-    printf("\n ./\\. \n//%02d\\\\\n``--´´\n", d);
-}
-
-//  .__.
-// /\__/\
-// \/12\/
-//  `--´
-void print_d12(int d)
-{
-    printf("\n .__. \n/\\__/\\\n\\/%02d\\/\n `--´ \n", d);
-}
-
-//   __
-//  /__\
-// /\20/\
-// \_\/_/
-void print_d20(int d)
-{
-    printf("\n  __  \n /__\\ \n/\\%02d/\\\n\\_\\/_/\n", d);
-}
-
-//   .
-// .´ `.
-// \100/
-//  `-´
-void print_d100(int d)
-{
-    printf("\n  .\n.´ `.\n\\%03d/\n `-´\n", d);
+    switch (die) {
+        case 4:
+            return d4;
+        case 6:
+            return d6;
+        case 8:
+            return d8;
+        case 10:
+            return d10;
+        case 12:
+            return d12;
+        case 20:
+            return d20;
+        case 100:
+            return d100;
+        default:
+            fprintf(stderr, "d%d is not a valid dice\n", die);
+    }
+    return NULL;
 }
 
 int parse_roll(const char *arg, struct roll_t *roll)
@@ -88,48 +78,35 @@ int parse_roll(const char *arg, struct roll_t *roll)
     int cnt = (*arg != '\0') ? atoi(arg) : 1;
     int die = atoi(split+1);
     roll->count = cnt;
-    roll->dice = die;
+    roll->die = die;
     return 0;
 }
 
-int process_roll(int cnt, int die)
+struct dice_t * process_roll(struct dice_t **dice, int cnt, int die)
 {
-    print_dice_t print_dice = NULL;
+    struct dice_t *ret = *dice;
+    while (dice) dice = dice->next;
 
-    switch (die) {
-    case 4:
-        print_dice = &print_d4;
-        break;
-    case 6:
-        print_dice = &print_d6;
-        break;
-    case 8:
-        print_dice = &print_d8;
-        break;
-    case 10:
-        print_dice = &print_d10;
-        break;
-    case 12:
-        print_dice = &print_d12;
-        break;
-    case 20:
-        print_dice = &print_d20;
-        break;
-    case 100:
-        print_dice = &print_d100;
-        break;
-    default:
-        fprintf(stderr, "d%d is not a valid dice\n", die);
-        return -1;
-    }
-
-    int roll, sum = 0;
     for (int i = 0; i < cnt; i++) {
-        roll = 1 + rand() / (RAND_MAX / die + 1);
-        print_dice(roll);
-        sum += roll;
+        dice = (struct dice_t *)calloc(1, sizeof(struct dice_t));
+        dice->roll = 1 + rand() / (RAND_MAX / die + 1);
+        dice->die = die;
+        dice = dice->next;
     }
-    return sum;
+    return ret;
+}
+
+void print_dice(struct dice_t *dice)
+{
+    struct dice_t *d;
+    struct string_t *ln;
+    for (int col = 0; col < 4; col++) {
+        for (d = dice; d != NULL; d = d->next) {
+            ln = line_map(d->die);
+            printf(ln[col].str, d->roll);
+        }
+        puts("");
+    }
 }
 
 int main(int argc, const char *argv[])
@@ -141,6 +118,7 @@ int main(int argc, const char *argv[])
     srand(time(NULL));
 
     int mods, sum = 0;
+    struct dice_t *dice = NULL;
     for (int i = 1; i < argc; i++) {
         if (argv[i][0] == '+' || argv[i][0] == '-') {
             mods += atoi(argv[i]);
@@ -149,16 +127,19 @@ int main(int argc, const char *argv[])
             if (parse_roll(argv[i], &roll) == -1) {
                 return -1;
             }
-            int res = process_roll(roll.count, roll.dice);
-            if (res == -1) {
-                return -1;
-            }
-            sum += res;
+            dice = process_roll(&dice, roll.count, roll.die);
         }
     }
+    print_dice(dice);
 
     printf("\nTotal modifiers: %d\n", mods);
     sum += mods;
+
+    struct dice_t *d;
+    for (d = dice; d != NULL; d = d->next) {
+        sum += d->roll;
+    }
     printf("\n%d\n", sum);
+    free_dice_t(dice);
     return 0;
 }
