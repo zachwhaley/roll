@@ -43,14 +43,28 @@ func parseRoll(arg string) (int, int, error) {
 	return cnt, die, nil
 }
 
-func processRoll(cnt, die int) []Roll {
+func isDie(die int) bool {
+	return die == 4 ||
+		die == 6 ||
+		die == 8 ||
+		die == 10 ||
+		die == 12 ||
+		die == 20 ||
+		die == 100
+}
+
+func processRoll(cnt, die int) ([]Roll, error) {
 	var dice []Roll
+
+	if !isDie(die) {
+		return nil, fmt.Errorf("d%d is not a valid dice\n", die)
+	}
 
 	for i := 0; i < cnt; i++ {
 		roll := rand.Intn(die) + 1
 		dice = append(dice, Roll{die, roll})
 	}
-	return dice
+	return dice, nil
 }
 
 func printDice(dice []Roll) {
@@ -86,7 +100,12 @@ func main() {
 				fmt.Fprint(os.Stderr, err)
 				os.Exit(-1)
 			}
-			dice = append(dice, processRoll(cnt, die)...)
+			roll, err := processRoll(cnt, die)
+			if err != nil {
+				fmt.Fprint(os.Stderr, err)
+				os.Exit(-1)
+			}
+			dice = append(dice, roll...)
 		}
 	}
 	printDice(dice)
