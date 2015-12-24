@@ -18,7 +18,7 @@ dmap = {
     12:  ["  .__. ", " /\__/\\", " \/%02d\/", "  `--´ "],
     20:  ["   __  ", "  /__\ ", " /\\%02d/\\", " \_\/_/"],
     100: ["   .  ", " .´ `.", " \\%03d/", "  `-´ "],
-    }
+}
 
 def parseroll(arg):
     cnt, sep, die = arg.partition('d')
@@ -28,7 +28,19 @@ def parseroll(arg):
     die = int(die)
     return cnt, die
 
+def isdie(die):
+    return (die == 4 or
+            die == 6 or
+            die == 8 or
+            die == 10 or
+            die == 12 or
+            die == 20 or
+            die == 100)
+
 def processroll(cnt, die):
+    if not isdie(die):
+        raise ValueError('d%d is not a valid dice' % die)
+
     res = []
     for i in range(cnt):
         roll = random.randint(1, die)
