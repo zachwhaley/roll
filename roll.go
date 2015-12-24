@@ -13,60 +13,18 @@ func init() {
 	rand.Seed(time.Now().UTC().UnixNano())
 }
 
-type printDice func(int)
-
-//   .
-//  / \
-// / 4 \
-// `---´
-func printD4(d int) {
-	fmt.Printf("\n  .\n / \\\n/ %d \\\n`---´\n", d)
+type Roll struct {
+	die, val int
 }
 
-// .---.
-// | 6 |
-// '---'
-func printD6(d int) {
-	fmt.Printf("\n.---.\n| %d |\n'---'\n", d)
-}
-
-//  /'\
-// /___\
-// \ 8 /
-//  \./
-func printD8(d int) {
-	fmt.Printf("\n /'\\\n/___\\\n\\ %d /\n \\./\n", d)
-}
-
-//  ./\.
-// //10\\
-// ``--´´
-func printD10(d int) {
-	fmt.Printf("\n ./\\. \n//%02d\\\\\n``--´´\n", d)
-}
-
-//  .__.
-// /\__/\
-// \/12\/
-//  `--´
-func printD12(d int) {
-	fmt.Printf("\n .__. \n/\\__/\\\n\\/%02d\\/\n `--´ \n", d)
-}
-
-//   __
-//  /__\
-// /\20/\
-// \_\/_/
-func printD20(d int) {
-	fmt.Printf("\n  __  \n /__\\ \n/\\%02d/\\\n\\_\\/_/\n", d)
-}
-
-//   .
-// .´ `.
-// \100/
-//  `-´
-func printD100(d int) {
-	fmt.Printf("\n  .\n.´ `.\n\\%03d/\n `-´\n", d)
+var dmap = map[int][]string{
+	4:   {"   .  ", "  / \\ ", " / %d \\", " `---´"},
+	6:   {"      ", " .---.", " | %d |", " '---'"},
+	8:   {"  /'\\ ", " /___\\", " \\ %d /", "  \\./ "},
+	10:  {"       ", "  ./\\. ", " //%02d\\\\", " ``--´´"},
+	12:  {"  .__. ", " /\\__/\\", " \\/%02d\\/", "  `--´ "},
+	20:  {"   __  ", "  /__\\ ", " /\\%02d/\\", " \\_\\/_/"},
+	100: {"   .  ", " .´ `.", " \\%03d/", "  `-´ "},
 }
 
 func parseRoll(arg string) (int, int, error) {
@@ -85,35 +43,28 @@ func parseRoll(arg string) (int, int, error) {
 	return cnt, die, nil
 }
 
-func processRoll(cnt, die int) (int, error) {
-	var print_dice printDice
+func processRoll(cnt, die int) []Roll {
+	var dice []Roll
 
-	switch die {
-	case 4:
-		print_dice = printD4
-	case 6:
-		print_dice = printD6
-	case 8:
-		print_dice = printD8
-	case 10:
-		print_dice = printD10
-	case 12:
-		print_dice = printD12
-	case 20:
-		print_dice = printD20
-	case 100:
-		print_dice = printD100
-	default:
-		return -1, fmt.Errorf("d%d is not a valid dice\n", die)
-	}
-
-	var sum int
 	for i := 0; i < cnt; i++ {
 		roll := rand.Intn(die) + 1
-		print_dice(roll)
-		sum += roll
+		dice = append(dice, Roll{die, roll})
 	}
-	return sum, nil
+	return dice
+}
+
+func printDice(dice []Roll) {
+	for i := 0; i < 4; i++ {
+		for _, roll := range dice {
+			l := dmap[roll.die]
+			if i != 2 {
+				fmt.Print(l[i])
+			} else {
+				fmt.Printf(l[i], roll.val)
+			}
+		}
+		fmt.Println()
+	}
 }
 
 func main() {
@@ -123,6 +74,7 @@ func main() {
 	}
 
 	var mods, sum int
+	var dice []Roll
 	for i := 1; i < len(os.Args); i++ {
 		arg := os.Args[i]
 		if arg[0] == '+' || arg[0] == '-' {
@@ -134,16 +86,16 @@ func main() {
 				fmt.Fprint(os.Stderr, err)
 				os.Exit(-1)
 			}
-			res, err := processRoll(cnt, die)
-			if err != nil {
-				fmt.Fprint(os.Stderr, err)
-				os.Exit(-1)
-			}
-			sum += res
+			dice = append(dice, processRoll(cnt, die)...)
 		}
 	}
+	printDice(dice)
 
 	fmt.Printf("\nTotal modifiers: %d\n", mods)
 	sum += mods
+
+	for _, roll := range dice {
+		sum += roll.val
+	}
 	fmt.Printf("\n%d\n", sum)
 }
