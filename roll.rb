@@ -30,7 +30,7 @@ def valid_dice?(dice)
 end
 
 def process_roll(count, dice)
-	raise "#{dice} is not a valid dice" unless valid_dice?(dice)
+  raise "#{dice} is not a valid dice" unless valid_dice?(dice)
 
   result = []
   count.times do
@@ -41,14 +41,14 @@ def process_roll(count, dice)
 end
 
 def print_dice(dice)
-	4.times do |line|
-		dice.each do |die|
-			line_parts = ASCII_MAP[die.last.to_sym]
-			string = line != 2 ? line_parts[line] : printf(line_parts[line], die.first)
-			print(string)
-		end
-		puts ""
-	end
+  4.times do |line|
+    dice.each do |die|
+      line_parts = ASCII_MAP[die.last.to_sym]
+      string = line != 2 ? line_parts[line] : printf(line_parts[line], die.first)
+      print(string)
+    end
+    puts ""
+  end
 end
 
 raise "No Dice" if ARGV.count < 1
@@ -58,12 +58,12 @@ mods = 0
 dice = []
 
 ARGV.each do |argument|
-	if ["-", "+"].include?(argument[0])
-		mods += argument.to_i
-	else
-		count, die = parse_roll(argument)
-		dice += process_roll(count, die)
-	end
+  if ["-", "+"].include?(argument[0])
+    mods += argument.to_i
+  else
+    count, die = parse_roll(argument)
+    dice += process_roll(count, die)
+  end
 end
 
 print_dice(dice)
